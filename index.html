@@ -2,11 +2,177 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Phono Project</title>
+	<link href='https://fonts.googleapis.com/css?family=Alegreya+Sans:400,300,100,500,700,800,900' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Halant:400,300,500,600,700' rel='stylesheet' type='text/css'>
+	<style>
+		body {
+			font-family: 'Alegreya Sans', sans-serif;
+			}
+		#gradient {
+			position: fixed;
+			left: 0;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			background: #fff;
+			z-index: 1;
+		}
+			
+		.container {
+			width: 800px;
+			position: relative;
+			margin-right: auto;
+			margin-left: auto;
+			z-index: 100;
+		}
+		.wrapper {
+
+		}
+		h1 {
+			font-size: 75px;
+			font-weight: 100;
+			text-align: center;
+			margin-top:20%;
+			background: url(images/sound_wave.svg) no-repeat center center;
+			background-size: 300px;
+			color: #272727;
+		}
+		p {
+			font-size:16px;
+			font-weight: 300;
+			font-family: 'Halant', serif;
+			color: #272727;
+		}
+		@media screen and (max-width: 799px){
+		    .container {
+	        width: 90%; }
+		}
+
+	</style>
 </head>
 <body>
+<div id="gradient"></div>
+<div class="container">
 	<h1>Phono</h1>
 	<p>status</p>
 	<p>description</p>
+	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam doloribus, commodi praesentium nulla, quos, architecto voluptatibus corporis omnis inventore rerum eos atque fugiat minus nisi. Minus expedita reiciendis, quibusdam in.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat, assumenda, soluta. Iure, tempora. Totam culpa et id! Labore asperiores eveniet ducimus qui! Eaque, praesentium, asperiores. Fugiat impedit provident sunt iste.</p>
+</div>
+<footer><p>Icon by Leinad Lehmko</p></footer>
+<script>
+	
+// target to give background to
+var $div = document.getElementById("gradient");
+// rgb vals of the gradients
+var gradients = [
+  { start: [255,255,255], stop: [30,41,58] },
+  { start: [255,207,160], stop: [255,255,255] },
+];
+// how long for each transition
+var transition_time = 8;
+// how many frames per second
+var fps = 60;
+
+
+// interal type vars
+var timer; // for the setInterval
+var interval_time = Math.round(1000/fps); // how often to interval
+var currentIndex = 0; // where we are in the gradients array
+var nextIndex = 1; // what index of the gradients array is next
+var steps_count = 0; // steps counter
+var steps_total = Math.round(transition_time*fps); // total amount of steps
+var rgb_steps = {
+  start: [0,0,0],
+  stop: [0,0,0]
+}; // how much to alter each rgb value
+var rgb_values = {
+  start: [0,0,0],
+  stop: [0,0,0]
+}; // the current rgb values, gets altered by rgb steps on each interval
+var prefixes = ["-webkit-","-moz-","-o-","-ms-",""]; // for looping through adding styles
+var div_style = $div.style; // short cut to actually adding styles
+var gradients_tested = false;
+var color1, color2;
+
+// sets next current and next index of gradients array
+function set_next(num) {
+  return (num + 1 < gradients.length) ? num + 1 : 0;
+}
+
+// work out how big each rgb step is
+function calc_step_size(a,b) {
+  return (a - b) / steps_total;
+}
+
+// populate the rgb_values and rgb_steps objects
+function calc_steps() {
+  for (var key in rgb_values) {
+    if (rgb_values.hasOwnProperty(key)) {
+      for(var i = 0; i < 3; i++) {
+        rgb_values[key][i] = gradients[currentIndex][key][i];
+        rgb_steps[key][i] = calc_step_size(gradients[nextIndex][key][i],rgb_values[key][i]);
+      }
+    }
+  }
+}
+
+// update current rgb vals, update DOM element with new CSS background
+function updateGradient(){
+  // update the current rgb vals
+  for (var key in rgb_values) {
+    if (rgb_values.hasOwnProperty(key)) {
+      for(var i = 0; i < 3; i++) {
+        rgb_values[key][i] += rgb_steps[key][i];
+      }
+    }
+  }
+
+  // generate CSS rgb values
+  var t_color1 = "rgb("+(rgb_values.start[0] | 0)+","+(rgb_values.start[1] | 0)+","+(rgb_values.start[2] | 0)+")";
+  var t_color2 = "rgb("+(rgb_values.stop[0] | 0)+","+(rgb_values.stop[1] | 0)+","+(rgb_values.stop[2] | 0)+")";
+
+  // has anything changed on this interation
+  if (t_color1 != color1 || t_color2 != color2) {
+
+    // update cols strings
+    color1 = t_color1;
+    color2 = t_color2;
+
+    // update DOM element style attribute
+    div_style.backgroundImage = "-webkit-gradient(linear, left bottom, right top, from("+color1+"), to("+color2+"))";
+    for (var i = 0; i < 4; i++) {
+      div_style.backgroundImage = prefixes[i]+"linear-gradient(45deg, "+color1+", "+color2+")";
+    }
+  }
+
+  // test if the browser can do CSS gradients
+  if (div_style.backgroundImage.indexOf("gradient") == -1 && !gradients_tested) {
+    // if not, kill the timer
+    clearTimeout(timer);
+  }
+  gradients_tested = true;
+
+  // we did another step
+  steps_count++;
+  // did we do too many steps?
+  if (steps_count > steps_total) {
+    // reset steps count
+    steps_count = 0;
+    // set new indexs
+    currentIndex = set_next(currentIndex);
+    nextIndex = set_next(nextIndex);
+    // calc steps
+    calc_steps();
+  }
+}
+
+// initial step calc
+calc_steps();
+
+// go go go!
+timer = setInterval(updateGradient,interval_time);
+</script>
 </body>
 </html>
