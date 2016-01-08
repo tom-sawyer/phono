@@ -40,12 +40,24 @@
 			background-size: 300px;
 			color: #667392;
 		}
+		
 		p {
 			font-size:16px;
 			font-weight: 300;
 			font-family: 'Halant', serif;
 			color: #444A5A;
 		}
+		a {
+			color: #444A5A;
+			text-decoration: none;
+			padding: 0px 2px;
+			border-bottom: 0px solid #555;
+			transition: border .1s ease;
+		}
+		a:hover {
+			border-bottom: 2px solid #555;
+		}
+
 		footer {
 			display: block;
 			position: inherit;
@@ -53,7 +65,7 @@
 			width: 600px;
 			margin-right: auto;
 			margin-left: auto;
-			margin-top: 50px;
+			margin-top: 100px;
 		}
 		.cc {
 			z-index: 100;
@@ -66,19 +78,111 @@
 	        width: 90%; }
 		}
 
+		#player {
+			width: 350px;
+			height: 50px;
+			position: relative;
+			margin: 0 auto;
+			top: 80px;
+			
+			i {
+				position: absolute;
+				margin-top: -6px;
+				color: #666;
+			}
+			
+			i.fa-volume-down {
+				margin-left: -8px;
+			}
+			
+			i.fa-volume-up {
+				margin-right: -8px;
+				right: 0;
+			}
+		}
+		
+		#volume {
+			position: absolute;
+			left: 24px;
+			margin: 0 auto;
+			height: 5px;
+			width: 300px;
+			background: #555;
+			border-radius: 15px;
+			}
+			.ui-slider-range-min {
+				height: 5px;
+				width: 300px;
+				position: absolute;
+				background: $primary-color;
+				border: none;
+				border-radius: 10px;
+		  	outline: none;
+			}
+			
+			.ui-slider-handle {
+				width: 20px;
+		  	height: 20px;
+				border-radius: 20px;
+		  	background: #FFF;
+		  	position: absolute;
+		  	margin-left: -8px;
+		  	margin-top: -8px;
+		  	cursor: pointer;
+		  	outline: none;
+			}
+		
+
 	</style>
 </head>
 <body>
 <div id="gradient"></div>
 <div class="container">
 	<h1>Phono</h1>
+	<div id="player">
+		<i class="fa fa-volume-down"></i>
+		<div id="volume"></div>
+		<i class="fa fa-volume-up"></i>
+	</div>
 	<p>status</p>
 	<p>description</p>
-	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam doloribus, commodi praesentium nulla, quos, architecto voluptatibus corporis omnis inventore rerum eos atque fugiat minus nisi. Minus expedita reiciendis, quibusdam in.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat, assumenda, soluta. Iure, tempora. Totam culpa et id! Labore asperiores eveniet ducimus qui! Eaque, praesentium, asperiores. Fugiat impedit provident sunt iste.</p>
+	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam doloribus, commodi praesentium nulla, quos, architecto voluptatibus corporis omnis inventore rerum eos atque fugiat minus nisi. <a href="">Minus expedita reiciendis</a>, quibusdam in.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat, assumenda, soluta. Iure, tempora. Totam culpa et id! Labore asperiores <a href="">eveniet</a> ducimus qui! Eaque, praesentium, asperiores. Fugiat impedit provident sunt iste.</p>
 </div>
 <footer>
 <div class="cc">Sound wave icon by Leinad Lehmko</div>
 </footer>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
+<script>
+$("#volume").slider({
+  	min: 0,
+  	max: 100,
+  	value: 0,
+		range: "min",
+  	slide: function(event, ui) {
+    	setVolume(ui.value / 100);
+  	}
+	});
+	
+	var myMedia = document.createElement('audio');
+	$('#player').append(myMedia);
+	myMedia.id = "myMedia";
+
+	playAudio('sound/fire.mp3', 0);
+	
+	function playAudio(fileName, myVolume) {
+			myMedia.src = fileName;
+			myMedia.setAttribute('loop', 'loop');
+    	setVolume(myVolume);
+    	myMedia.play();
+	}
+	
+	function setVolume(myVolume) {
+    var myMedia = document.getElementById('myMedia');
+    myMedia.volume = myVolume;
+	}   
+
+</script>
 
 <!--<script src="js/background.js"></script>-->
 </body>
