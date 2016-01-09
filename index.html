@@ -73,32 +73,26 @@
 			color: #fff;
 			text-align: center;
 		}
-		@media screen and (max-width: 799px){
-		    .container {
-	        width: 90%; }
-		}
 
 		#player {
 			width: 350px;
 			height: 50px;
 			position: relative;
 			margin: 0 auto;
-			top: 80px;
-			
-			i {
-				position: absolute;
-				margin-top: -6px;
-				color: #666;
 			}
+		i {
+			position: absolute;
+			margin-top: -6px;
+			color: #666;
+		}
 			
-			i.fa-volume-down {
-				margin-left: -8px;
-			}
+		i.fa-volume-down {
+			margin-left: -8px;
+		}
 			
-			i.fa-volume-up {
-				margin-right: -8px;
-				right: 0;
-			}
+		i.fa-volume-up {
+			margin-right: -8px;
+			right: 0;
 		}
 		
 		#volume {
@@ -110,29 +104,31 @@
 			background: #555;
 			border-radius: 15px;
 			}
-			.ui-slider-range-min {
-				height: 5px;
-				width: 300px;
-				position: absolute;
-				background: $primary-color;
-				border: none;
-				border-radius: 10px;
+		.ui-slider-range-min {
+			height: 5px;
+			width: 300px;
+			position: absolute;
+			background: $primary-color;
+			border: none;
+			border-radius: 10px;
 		  	outline: none;
-			}
+		}
 			
-			.ui-slider-handle {
-				width: 20px;
+		.ui-slider-handle {
+			width: 20px;
 		  	height: 20px;
-				border-radius: 20px;
+			border-radius: 20px;
 		  	background: #FFF;
 		  	position: absolute;
 		  	margin-left: -8px;
 		  	margin-top: -8px;
 		  	cursor: pointer;
 		  	outline: none;
-			}
-		
-
+		}
+		@media screen and (max-width: 799px){
+		    .container {
+	        	width: 90%; }
+		}
 	</style>
 </head>
 <body>
@@ -144,8 +140,7 @@
 		<div id="volume"></div>
 		<i class="fa fa-volume-up"></i>
 	</div>
-	<p>status</p>
-	<p>description</p>
+
 	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam doloribus, commodi praesentium nulla, quos, architecto voluptatibus corporis omnis inventore rerum eos atque fugiat minus nisi. <a href="">Minus expedita reiciendis</a>, quibusdam in.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat, assumenda, soluta. Iure, tempora. Totam culpa et id! Labore asperiores <a href="">eveniet</a> ducimus qui! Eaque, praesentium, asperiores. Fugiat impedit provident sunt iste.</p>
 </div>
 <footer>
